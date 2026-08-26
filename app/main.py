@@ -11,7 +11,7 @@ class Node:
 
 
 class Dictionary:
-    """Custom implementation of Python's built-in dict using open addressing."""
+    """Custom dictionary implementation using open addressing."""
 
     INITIAL_CAPACITY: int = 8
     LOAD_FACTOR: float = 2 / 3
@@ -65,7 +65,7 @@ class Dictionary:
 
         raise KeyError(key)
 
-    def __delitem__(self, key: Any) -> None:
+    def delitem(self, key: Any) -> None:
         key_hash = hash(key)
         slot = self._get_slot(key_hash, self._capacity)
         start_slot = slot
@@ -107,17 +107,22 @@ class Dictionary:
 
     def pop(self, key: Any, default: Any = ...) -> Any:
         try:
-            val = self[key]
+            target_value = self[key]
             del self[key]
-            return val
+            return target_value
         except KeyError:
             if default is not ...:
                 return default
             raise
 
     def update(self, other: Any) -> None:
-        if isinstance(other, dict) or isinstance(other, Dictionary):
-            for k, v in other.items() if hasattr(other, "items") else other.iter_items():
+        if isinstance(other, (dict, Dictionary)):
+            items = (
+                other.items()
+                if hasattr(other, "items")
+                else other.iter_items()
+            )
+            for k, v in items:
                 self[k] = v
         else:
             for k, v in other:
