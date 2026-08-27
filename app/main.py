@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Iterator
 
 
 class Dictionary:
@@ -35,10 +35,10 @@ class Dictionary:
     def __len__(self) -> int:
         return len(self._items)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Any]:
         return iter(key for key, _ in self._items)
 
-    def items(self):
+    def items(self) -> Iterator[tuple[Any, Any]]:
         return iter(self._items)
 
     def update(self, other: Any = None, **kwargs: Any) -> None:
